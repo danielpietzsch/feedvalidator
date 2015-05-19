@@ -1,4 +1,4 @@
-= FeedValidator
+= FeedValidator [![Build Status](https://travis-ci.org/edgar/feedvalidator.png?branch=master)](https://travis-ci.org/edgar/feedvalidator) [![Gem Version](https://badge.fury.io/rb/feedvalidator.svg)](http://badge.fury.io/rb/feedvalidator)
 
 FeedValidator is an interface to the {W3C Feed Validation online service}[http://validator.w3.org/feed/],
 based on its SOAP 1.2 support.
