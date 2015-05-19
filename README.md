@@ -1,4 +1,4 @@
-= FeedValidator [![Build Status](https://travis-ci.org/edgar/feedvalidator.png?branch=master)](https://travis-ci.org/edgar/feedvalidator) [![Gem Version](https://badge.fury.io/rb/feedvalidator.svg)](http://badge.fury.io/rb/feedvalidator)
+# FeedValidator [![Build Status](https://travis-ci.org/edgar/feedvalidator.png?branch=master)](https://travis-ci.org/edgar/feedvalidator) [![Gem Version](https://badge.fury.io/rb/feedvalidator.svg)](http://badge.fury.io/rb/feedvalidator)
 
 FeedValidator is an interface to the {W3C Feed Validation online service}[http://validator.w3.org/feed/],
 based on its SOAP 1.2 support.
@@ -10,7 +10,7 @@ This assertion implements a cache to improve the performance of the tests and to
 {W3C Feed Validation online service}[http://validator.w3.org/feed/]
 
 
-== Examples
+## Examples
 
 * For use FeedValidator just do this:
 
@@ -43,18 +43,14 @@ This assertion implements a cache to improve the performance of the tests and to
     assert_valid_feed :bar, :foo
     ```
 
-== Download
-
-The latest version of FeedValidator can be found at
-
-* http://github.com/edgar/feedvalidator
+## Documentation
 
 Documentation can be found at
 
 * http://feedvalidator.rubyforge.org
 
 
-== Installation
+## Installation
 
 You can install FeedValidator as a gem:
 
@@ -67,6 +63,6 @@ and then extract it to your lib directory as you would with any other
 Ruby library.
 
 
-== License
+## License
 
 FeedValidator is released under the MIT license.
