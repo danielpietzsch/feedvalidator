@@ -2,17 +2,22 @@
 $:.push File.expand_path("../lib", __FILE__)
 require "feed_validator"
 
-Gem::Specification.new do |s|
-  s.name = "feedvalidator"
-  s.version = W3C::FeedValidator::VERSION
-  s.description = %q{Interface to the W3C Feed Validation online service http://validator.w3.org/feed/, based on its SOAP 1.2 support. It helps to find errors in RSS or Atom feeds. Add a new assertion to validate feeds against the W3C from within Rails functional tests}
-  s.summary = %q{Interface to the W3C Feed Validation online service http://validator.w3.org/feed/}
-  s.email = %q{colin@bandzoogle.com}
-  s.authors = ["People"]
+Gem::Specification.new do |gem|
+  gem.files         = `git ls-files`.split($\)
+  gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
+  gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
+  gem.summary       = %q{Interface to the W3C Feed Validation online service http://validator.w3.org/feed/}
+  gem.name          = "feedvalidator"
+  gem.require_paths = ["lib"]
+  gem.version       = W3C::FeedValidator::VERSION
+  gem.license       = "MIT"
+  gem.authors       = ["Edgar Gonzalez"]
+  gem.email         = ["edgargonzalez@gmail.com"]
+  gem.description   = %q{Interface to the W3C Feed Validation online service http://validator.w3.org/feed/}
 
-  s.files         = `git ls-files`.split("\n")
-  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.require_paths = ["lib"]
+  gem.add_development_dependency 'rake'
 
-  s.add_development_dependency(%q<rake>, [">= 0"])
+  if RUBY_VERSION > '2.0.0'
+    gem.add_development_dependency 'test-unit'
+  end
 end
