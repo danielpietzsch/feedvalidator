@@ -1,13 +1,30 @@
 # FeedValidator [![Build Status](https://travis-ci.org/edgar/feedvalidator.png?branch=master)](https://travis-ci.org/edgar/feedvalidator) [![Gem Version](https://badge.fury.io/rb/feedvalidator.svg)](http://badge.fury.io/rb/feedvalidator)
 
-FeedValidator is an interface to the {W3C Feed Validation online service}[http://validator.w3.org/feed/],
+FeedValidator is an interface to the [W3C Feed Validation online service](http://validator.w3.org/feed/),
 based on its SOAP 1.2 support.
 
 It helps to find errors in RSS or ATOM feeds.
 
-FeedValidator add a new assertion (<code>assert_valid_feed</code>) which you can use in Rails applications.
+FeedValidator add a new assertion (`assert_valid_feed`) which you can use in Rails applications.
 This assertion implements a cache to improve the performance of the tests and to not abuse of the
-{W3C Feed Validation online service}[http://validator.w3.org/feed/]
+[W3C Feed Validation online service](http://validator.w3.org/feed/)
+
+
+## Installation
+
+Add this line to your application's Gemfile:
+
+```ruby
+gem 'feed_validator'
+```
+
+And then execute:
+
+    $ bundle
+
+Or install it yourself as:
+
+    $ gem install feed_validator
 
 
 ## Examples
@@ -48,20 +65,6 @@ This assertion implements a cache to improve the performance of the tests and to
 Documentation can be found at
 
 * http://feedvalidator.rubyforge.org
-
-
-## Installation
-
-You can install FeedValidator as a gem:
-
-  ```ruby
-  gem install feedvalidator
-  ```
-
-Or you can install it from the tarball or zip packages on the download page
-and then extract it to your lib directory as you would with any other
-Ruby library.
-
 
 ## License
 
