@@ -14,6 +14,7 @@ Gem::Specification.new do |gem|
   gem.authors       = ["Edgar Gonzalez"]
   gem.email         = ["edgargonzalez@gmail.com"]
   gem.description   = %q{Interface to the W3C Feed Validation online service http://validator.w3.org/feed/}
+  gem.homepage      = "http://github.com/edgar/feedvalidator"
 
   gem.add_development_dependency 'rake'
 
