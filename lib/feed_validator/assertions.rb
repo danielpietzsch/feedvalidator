@@ -36,7 +36,7 @@ module W3C
         parse_response(response.body)
       else
         parse_response(response)
-      end      
+      end
     end
   end
 end
@@ -62,7 +62,7 @@ class Test::Unit::TestCase
     begin
       response = File.open filename do |f| Marshal.load(f) end
       v.parse(response)
-  	rescue   
+  	rescue
       unless v.validate_data(fragment)
         warn("Sorry! could not validate the feed.")
         return assert(true,'')
@@ -71,7 +71,7 @@ class Test::Unit::TestCase
   	end
     assert(v.valid?, v.valid? ? '' : v.to_s)
   end
-  
+
   # Class-level method to quickly create validation tests for a bunch of actions at once in Rails.
   # For example, if you have a FooController with three actions, just add one line to foo_controller_test.rb:
   #
@@ -87,5 +87,5 @@ class Test::Unit::TestCase
       EOF
     end
   end
-  
+
 end

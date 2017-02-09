@@ -21,8 +21,8 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 #
-# Provide an interface to the {W3C Feed Validation online service}[http://validator.w3.org/feed/], 
-# based on its SOAP 1.2 support. 
+# Provide an interface to the {W3C Feed Validation online service}[http://validator.w3.org/feed/],
+# based on its SOAP 1.2 support.
 #
 require 'net/http'
 require 'cgi'
@@ -31,8 +31,8 @@ require 'rexml/document'
 
 module W3C
 
-  # Implements an interface to the {W3C Feed Validation online service}[http://validator.w3.org/feed/], 
-  # based on its SOAP 1.2 support. 
+  # Implements an interface to the {W3C Feed Validation online service}[http://validator.w3.org/feed/],
+  # based on its SOAP 1.2 support.
   #
   # It helps to find errors in RSS or Atom feeds.
   # ---
@@ -45,47 +45,53 @@ module W3C
     # True if the w3c feed validation service not found errors in the feed.
     #
     attr_reader :valid
-    
+
     # The complete response (as Net::HTTPResponse object) sent it by the w3c feed validation service.
     #
     attr_reader :response
-    
+
     # Collection of _errors_ founded by the w3c feed validation service.
-    # Every error is a hash containing: <tt>:type</tt>, <tt>:line</tt>, 
+    # Every error is a hash containing: <tt>:type</tt>, <tt>:line</tt>,
     # <tt>:column</tt>, <tt>:text</tt>, <tt>:element</tt>
     #
     attr_reader :errors
 
     # Collection of _warnings_ founded by the w3c feed validation service.
-    # Every error is a hash containing: <tt>:type</tt>, <tt>:line</tt>, 
+    # Every error is a hash containing: <tt>:type</tt>, <tt>:line</tt>,
     # <tt>:column</tt>, <tt>:text</tt>, <tt>:element</tt>
     #
     attr_reader :warnings
 
     # Collection of _informations_ founded by the w3c feed validation service.
-    # Every error is a hash containing: <tt>:type</tt>, <tt>:line</tt>, 
+    # Every error is a hash containing: <tt>:type</tt>, <tt>:line</tt>,
     # <tt>:column</tt>, <tt>:text</tt>, <tt>:element</tt>
     #
     attr_reader :informations
-  
+
+    # request_type
+    # :manuel for direct input validation
+    # :url    for url validation
+    attr_reader :request_type
+
     # Initialize the feed validator object
     #
     def initialize
       clear
     end
-    
-    # Validate the data provided. 
+
+    # Validate the data provided.
     # Returns a true value if the validation succeeded (regardless of whether the feed contains errors).
     #
     def validate_data(rawdata)
       clear
       params = "rawdata=#{CGI.escape(rawdata)}&manual=1&output=soap12"
+      @request_type = :manual
       begin
 #        headers = VERSION == "1.8.4" ? {'Content-Type'=>'application/x-www-form-urlencoded'} : {}
         headers = {'Content-Type'=>'application/x-www-form-urlencoded'}
         @response = Net::HTTP.start('validator.w3.org',80) {|http|
           http.post('/feed/check.cgi',params,headers)
-        } 
+        }
       rescue Exception => e
         warn "Exception: #{e.class}: #{e.message}\n\t#{e.backtrace.join("\n\t")}" if $VERBOSE
         return false
@@ -95,12 +101,13 @@ module W3C
       return true
     end
 
-    # Validate the url provided. 
+    # Validate the url provided.
     # Returns a true value if the validation succeeded (regardless of whether the feed contains errors).
     #
     def validate_url(url)
       clear
       params = "url=#{CGI.escape(url)}&output=soap12"
+      @request_type = :url
       begin
         @response = Net::HTTP.get_response('validator.w3.org',"/feed/check.cgi?#{params}",80)
       rescue Exception => e
@@ -116,16 +123,16 @@ module W3C
     def to_s
       msg = "Vailidity: #{@valid}\n"
       msg << "Errors count: #{@errors.size}\n"
-      @errors.each_with_index{ |item, i| msg << "(#{i+1}) type: #{item[:type]} | line: #{item[:line]} | column: #{item[:column]} | text: #{item[:text]},\n"}  
+      @errors.each_with_index{ |item, i| msg << "(#{i+1}) type: #{item[:type]} | line: #{item[:line]} | column: #{item[:column]} | text: #{item[:text]},\n"}
       msg << "Warnings count: #{@warnings.size}\n"
-      @warnings.each_with_index{ |item, i| msg << "(#{i+1}) type: #{item[:type]} | line: #{item[:line]} | column: #{item[:column]} | text: #{item[:text]},\n"}  
+      @warnings.each_with_index{ |item, i| msg << "(#{i+1}) type: #{item[:type]} | line: #{item[:line]} | column: #{item[:column]} | text: #{item[:text]},\n"}
       msg << "Informations count: #{@informations.size}\n"
-      @informations.each_with_index{ |item, i| msg << "(#{i+1}) type: #{item[:type]} | line: #{item[:line]} | column: #{item[:column]} | text: #{item[:text]},\n"}  
+      @informations.each_with_index{ |item, i| msg << "(#{i+1}) type: #{item[:type]} | line: #{item[:line]} | column: #{item[:column]} | text: #{item[:text]},\n"}
       msg
     end
 
     private
-    
+
     def parse_response(response) #nodoc
       xml = REXML::Document.new(response)
       @valid = (/true/.match(xml.root.elements["env:Body/m:feedvalidationresponse/m:validity"].get_text.value))? true : false
@@ -141,6 +148,11 @@ module W3C
         end
       end
       xml.elements.each("env:Envelope/env:Body/m:feedvalidationresponse/m:warnings/m:warninglist/warning") do |warning|
+        next if
+          @request_type == :manual &&
+          warning.elements["type"].get_text.value == "SelfDoesntMatchLocation" &&
+          warning.elements["text"].get_text.value == "Self reference doesn't match document location"
+
         @warnings << {
           :type =>    warning.elements["type"].nil? ? "" : warning.elements["type"].get_text.value,
           :line =>    warning.elements["line"].nil? ? "" : warning.elements["line"].get_text.value,
@@ -162,11 +174,12 @@ module W3C
 
     def clear #nodoc
       @response = nil
+      @request_type = nil
       @valid = false
       @errors = []
       @warnings = []
       @informations = []
     end
-      
+
   end
 end
