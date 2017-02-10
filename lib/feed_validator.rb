@@ -68,6 +68,11 @@ module W3C
     #
     attr_reader :informations
 
+    # request_type
+    # :manuel for direct input validation
+    # :url    for url validation
+    attr_reader :request_type
+
     # Initialize the feed validator object
     #
     def initialize
@@ -80,6 +85,7 @@ module W3C
     def validate_data(rawdata)
       clear
       params = "rawdata=#{CGI.escape(rawdata)}&manual=1&output=soap12"
+      @request_type = :manual
       begin
 #        headers = VERSION == "1.8.4" ? {'Content-Type'=>'application/x-www-form-urlencoded'} : {}
         headers = {'Content-Type'=>'application/x-www-form-urlencoded'}
@@ -101,6 +107,7 @@ module W3C
     def validate_url(url)
       clear
       params = "url=#{CGI.escape(url)}&output=soap12"
+      @request_type = :url
       begin
         @response = Net::HTTP.get_response('validator.w3.org',"/feed/check.cgi?#{params}",80)
       rescue Exception => e
@@ -141,6 +148,11 @@ module W3C
         end
       end
       xml.elements.each("env:Envelope/env:Body/m:feedvalidationresponse/m:warnings/m:warninglist/warning") do |warning|
+        next if
+          @request_type == :manual &&
+          warning.elements["type"].get_text.value == "SelfDoesntMatchLocation" &&
+          warning.elements["text"].get_text.value == "Self reference doesn't match document location"
+
         @warnings << {
           :type =>    warning.elements["type"].nil? ? "" : warning.elements["type"].get_text.value,
           :line =>    warning.elements["line"].nil? ? "" : warning.elements["line"].get_text.value,
@@ -162,6 +174,7 @@ module W3C
 
     def clear #nodoc
       @response = nil
+      @request_type = nil
       @valid = false
       @errors = []
       @warnings = []

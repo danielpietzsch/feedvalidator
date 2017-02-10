@@ -48,7 +48,7 @@ class FeedValidatorTest < Test::Unit::TestCase
     assert v.valid?
 
     assert v.errors.size == 0
-    #assert v.warnings.size == 0
+    assert v.warnings.size == 0
     assert v.informations.size == 0
 
     data = ""
