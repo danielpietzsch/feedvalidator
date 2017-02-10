@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2006 Edgar Gonzalez <edgar@lacaraoscura.com>
+# Copyright (c) 2006 Edgar Gonzalez <edgargonzalez@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -26,7 +26,7 @@ require 'test/unit'
 require 'feed_validator'
 
 class FeedValidatorTest < Test::Unit::TestCase
-  
+
   def test_validate_url
     v = W3C::FeedValidator.new()
     assert v.validate_url('http://www.w3.org/QA/news.rss')
@@ -39,7 +39,7 @@ class FeedValidatorTest < Test::Unit::TestCase
 
   def test_validate_data
     v = W3C::FeedValidator.new()
-    
+
     data = ""
     File.open(File.dirname(__FILE__) + "/../feeds/" + "weblog.rubyonrails.org_rss_2_0_articles.xml").each { |line|
       data << line
@@ -59,7 +59,7 @@ class FeedValidatorTest < Test::Unit::TestCase
     assert v.valid?
     assert v.errors.size == 0
     assert v.warnings.size >= 1
-    
+
     data = ""
     File.open(File.dirname(__FILE__) + "/../feeds/" + "weblog.rubyonrails.org_rss_2_0_articles_malformed.xml").each { |line|
       data << line
@@ -70,5 +70,5 @@ class FeedValidatorTest < Test::Unit::TestCase
     assert v.errors.first[:line] == "5"
     assert v.errors.first[:column] == "4"
   end
-  
+
 end

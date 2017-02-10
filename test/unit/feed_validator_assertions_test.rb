@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2006 Edgar Gonzalez <edgar@lacaraoscura.com>
+# Copyright (c) 2006 Edgar Gonzalez <edgargonzalez@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -27,7 +27,7 @@ require 'feed_validator/assertions'
 require 'digest/md5'
 
 class FeedValidatorAssertionsTest < Test::Unit::TestCase
-  
+
   def test_assert_valid_feed
     # a valid feed
     data = ""
@@ -36,14 +36,14 @@ class FeedValidatorAssertionsTest < Test::Unit::TestCase
     }
     assert_valid_feed(data)
   end
-  
+
   def test_cache
     # testing the cache using an invalid feed with a success response cached
-    fragment_feed = ">--invalid feed--<"    
+    fragment_feed = ">--invalid feed--<"
     response = File.open File.dirname(__FILE__) + "/../responses/success_with_warnings" do |f| Marshal.load(f) end
     filename = File.join Dir::tmpdir, 'feed.' + Digest::MD5.hexdigest(fragment_feed).to_s
     File.open filename, 'w+' do |f| Marshal.dump response, f end
-    assert_valid_feed(fragment_feed)  
+    assert_valid_feed(fragment_feed)
   end
-  
+
 end

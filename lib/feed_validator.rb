@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2006 Edgar Gonzalez <edgar@lacaraoscura.com>
+# Copyright (c) 2006 Edgar Gonzalez <edgargonzalez@gmail.com>
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -21,8 +21,8 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 #
-# Provide an interface to the {W3C Feed Validation online service}[http://validator.w3.org/feed/], 
-# based on its SOAP 1.2 support. 
+# Provide an interface to the {W3C Feed Validation online service}[http://validator.w3.org/feed/],
+# based on its SOAP 1.2 support.
 #
 require 'net/http'
 require 'cgi'
@@ -31,8 +31,8 @@ require 'rexml/document'
 
 module W3C
 
-  # Implements an interface to the {W3C Feed Validation online service}[http://validator.w3.org/feed/], 
-  # based on its SOAP 1.2 support. 
+  # Implements an interface to the {W3C Feed Validation online service}[http://validator.w3.org/feed/],
+  # based on its SOAP 1.2 support.
   #
   # It helps to find errors in RSS or Atom feeds.
   # ---
@@ -45,36 +45,36 @@ module W3C
     # True if the w3c feed validation service not found errors in the feed.
     #
     attr_reader :valid
-    
+
     # The complete response (as Net::HTTPResponse object) sent it by the w3c feed validation service.
     #
     attr_reader :response
-    
+
     # Collection of _errors_ founded by the w3c feed validation service.
-    # Every error is a hash containing: <tt>:type</tt>, <tt>:line</tt>, 
+    # Every error is a hash containing: <tt>:type</tt>, <tt>:line</tt>,
     # <tt>:column</tt>, <tt>:text</tt>, <tt>:element</tt>
     #
     attr_reader :errors
 
     # Collection of _warnings_ founded by the w3c feed validation service.
-    # Every error is a hash containing: <tt>:type</tt>, <tt>:line</tt>, 
+    # Every error is a hash containing: <tt>:type</tt>, <tt>:line</tt>,
     # <tt>:column</tt>, <tt>:text</tt>, <tt>:element</tt>
     #
     attr_reader :warnings
 
     # Collection of _informations_ founded by the w3c feed validation service.
-    # Every error is a hash containing: <tt>:type</tt>, <tt>:line</tt>, 
+    # Every error is a hash containing: <tt>:type</tt>, <tt>:line</tt>,
     # <tt>:column</tt>, <tt>:text</tt>, <tt>:element</tt>
     #
     attr_reader :informations
-  
+
     # Initialize the feed validator object
     #
     def initialize
       clear
     end
-    
-    # Validate the data provided. 
+
+    # Validate the data provided.
     # Returns a true value if the validation succeeded (regardless of whether the feed contains errors).
     #
     def validate_data(rawdata)
@@ -85,7 +85,7 @@ module W3C
         headers = {'Content-Type'=>'application/x-www-form-urlencoded'}
         @response = Net::HTTP.start('validator.w3.org',80) {|http|
           http.post('/feed/check.cgi',params,headers)
-        } 
+        }
       rescue Exception => e
         warn "Exception: #{e.class}: #{e.message}\n\t#{e.backtrace.join("\n\t")}" if $VERBOSE
         return false
@@ -95,7 +95,7 @@ module W3C
       return true
     end
 
-    # Validate the url provided. 
+    # Validate the url provided.
     # Returns a true value if the validation succeeded (regardless of whether the feed contains errors).
     #
     def validate_url(url)
@@ -116,16 +116,16 @@ module W3C
     def to_s
       msg = "Vailidity: #{@valid}\n"
       msg << "Errors count: #{@errors.size}\n"
-      @errors.each_with_index{ |item, i| msg << "(#{i+1}) type: #{item[:type]} | line: #{item[:line]} | column: #{item[:column]} | text: #{item[:text]},\n"}  
+      @errors.each_with_index{ |item, i| msg << "(#{i+1}) type: #{item[:type]} | line: #{item[:line]} | column: #{item[:column]} | text: #{item[:text]},\n"}
       msg << "Warnings count: #{@warnings.size}\n"
-      @warnings.each_with_index{ |item, i| msg << "(#{i+1}) type: #{item[:type]} | line: #{item[:line]} | column: #{item[:column]} | text: #{item[:text]},\n"}  
+      @warnings.each_with_index{ |item, i| msg << "(#{i+1}) type: #{item[:type]} | line: #{item[:line]} | column: #{item[:column]} | text: #{item[:text]},\n"}
       msg << "Informations count: #{@informations.size}\n"
-      @informations.each_with_index{ |item, i| msg << "(#{i+1}) type: #{item[:type]} | line: #{item[:line]} | column: #{item[:column]} | text: #{item[:text]},\n"}  
+      @informations.each_with_index{ |item, i| msg << "(#{i+1}) type: #{item[:type]} | line: #{item[:line]} | column: #{item[:column]} | text: #{item[:text]},\n"}
       msg
     end
 
     private
-    
+
     def parse_response(response) #nodoc
       xml = REXML::Document.new(response)
       @valid = (/true/.match(xml.root.elements["env:Body/m:feedvalidationresponse/m:validity"].get_text.value))? true : false
@@ -167,6 +167,6 @@ module W3C
       @warnings = []
       @informations = []
     end
-      
+
   end
 end
