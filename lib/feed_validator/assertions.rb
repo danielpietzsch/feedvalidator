@@ -68,7 +68,7 @@ class Test::Unit::TestCase
         return assert(true,'')
       end
       File.open filename, 'w+' do |f| Marshal.dump v.response, f end
-  	end
+    end
     assert(v.valid?, v.valid? ? '' : v.to_s)
   end
 
