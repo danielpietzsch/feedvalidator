@@ -62,7 +62,7 @@ class Test::Unit::TestCase
     begin
       response = File.open filename do |f| Marshal.load(f) end
       v.parse(response)
-  	rescue
+    rescue
       unless v.validate_data(fragment)
         warn("Sorry! could not validate the feed.")
         return assert(true,'')
