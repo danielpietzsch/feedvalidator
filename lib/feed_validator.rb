@@ -40,7 +40,7 @@ module W3C
   # so do not abuse it: you should make your scripts sleep between requests.
   #
   class FeedValidator
-    VERSION = "0.2.1"
+    VERSION = "0.2.2"
 
     # True if the w3c feed validation service not found errors in the feed.
     #
