@@ -64,7 +64,7 @@ Or install it yourself as:
 
 Documentation can be found at
 
-* https://www.rubydoc.info/gems/feedvalidator/0.2.2
+* https://www.rubydoc.info/gems/feedvalidator/
 
 ## License
 
