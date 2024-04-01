@@ -89,9 +89,9 @@ module W3C
       begin
 #        headers = VERSION == "1.8.4" ? {'Content-Type'=>'application/x-www-form-urlencoded'} : {}
         headers = {'Content-Type'=>'application/x-www-form-urlencoded'}
-        @response = Net::HTTP.start('validator.w3.org',80) {|http|
-          http.post('/feed/check.cgi',params,headers)
-        }
+        @response = Net::HTTP.start('validator.w3.org', 443, use_ssl: true) do |https|
+          https.post('/feed/check.cgi', params, headers)
+        end
       rescue Exception => e
         warn "Exception: #{e.class}: #{e.message}\n\t#{e.backtrace.join("\n\t")}" if $VERBOSE
         return false
