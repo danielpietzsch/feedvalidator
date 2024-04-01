@@ -15,7 +15,7 @@ This assertion implements a cache to improve the performance of the tests and to
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'feed_validator'
+gem 'feedvalidator'
 ```
 
 And then execute:
@@ -24,7 +24,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install feed_validator
+    $ gem install feedvalidator
 
 
 ## Examples
