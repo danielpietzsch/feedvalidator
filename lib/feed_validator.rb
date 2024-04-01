@@ -109,7 +109,7 @@ module W3C
       params = "url=#{CGI.escape(url)}&output=soap12"
       @request_type = :url
       begin
-        @response = Net::HTTP.get_response('validator.w3.org',"/feed/check.cgi?#{params}",80)
+        @response = Net::HTTP.get_response(URI("https://validator.w3.org/feed/check.cgi?#{params}"))
       rescue Exception => e
         warn "Exception: #{e.class}: #{e.message}\n\t#{e.backtrace.join("\n\t")}" if $VERBOSE
         return false
