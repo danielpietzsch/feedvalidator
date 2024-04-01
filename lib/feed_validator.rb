@@ -121,7 +121,7 @@ module W3C
     alias :valid? :valid
 
     def to_s
-      msg = "Vailidity: #{@valid}\n"
+      msg = "Validity: #{@valid}\n"
       msg << "Errors count: #{@errors.size}\n"
       @errors.each_with_index{ |item, i| msg << "(#{i+1}) type: #{item[:type]} | line: #{item[:line]} | column: #{item[:column]} | text: #{item[:text]},\n"}
       msg << "Warnings count: #{@warnings.size}\n"
